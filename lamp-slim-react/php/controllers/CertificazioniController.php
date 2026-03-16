@@ -64,11 +64,11 @@ class CertificazioniController
 
     if ($result) {
       $response->getBody()->write(json_encode([
+        'id' => $mysqli_connection->insert_id,
         'alunno_id' => $alunno_id,
         'titolo' => $titolo,
         'votazione' => $votazione,
         'ente' => $ente,
-        'id' => $mysqli_connection->insert_id
       ]));
       return $response->withHeader("Content-type", "application/json")->withStatus(201); 
     } else {
