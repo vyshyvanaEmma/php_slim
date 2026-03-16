@@ -56,6 +56,7 @@ $app->get('/alunni/{idAlunno}/certificazioni/{idCert}', "CertificazioniControlle
 
 $app->post('/alunni/{idAlunno}/certificazioni', "CertificazioniController:create");
 
+// da fare
 $app->put('/alunni/{idAlunno}/certificazioni/{idCert}', "CertificazioniController:update");
 
 $app->delete('/alunni/{idAlunno}/certificazioni/{idCert}', "CertificazioniController:destroy");

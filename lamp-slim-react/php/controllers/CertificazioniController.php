@@ -39,7 +39,42 @@ class CertificazioniController
   }
 
   public function create(Request $request, Response $response, $args){
+    $data = json_decode($request->getBody(), true);
 
+    // controllo se i campi sono riempiti
+    if (empty($data['titolo']) || empty($data['votazione']) || empty($data['ente'])) {
+      $response->getBody()->write(json_encode([
+        'error' => 'titolo, votazione e ente sono obbligatori'
+      ]));
+      return $response->withHeader('Content-Type','application/json')->withStatus(400);
+    }
+
+    $alunno_id = $args['idAlunno'];
+    $titolo = $data['titolo']; 
+    $votazione = $data['votazione'];
+    $ente = $data['ente'];
+
+    $mysqli_connection = new MySQLi('my_mariadb', 'root', 'ciccio', 'scuola');
+    if ($mysqli_connection->connect_error) {
+      $response->getBody()->write(json_encode(['error' => 'errore di connessione al database']));
+      return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
+    }
+
+    $result = $mysqli_connection->query("INSERT INTO certificazioni (alunno_id, titolo, votazione, ente) VALUES($alunno_id, '$titolo', $votazione, '$ente')");
+
+    if ($result) {
+      $response->getBody()->write(json_encode([
+        'alunno_id' => $alunno_id,
+        'titolo' => $titolo,
+        'votazione' => $votazione,
+        'ente' => $ente,
+        'id' => $mysqli_connection->insert_id
+      ]));
+      return $response->withHeader("Content-type", "application/json")->withStatus(201); 
+    } else {
+      $response->getBody()->write(json_encode(['error' => 'errore di insert']));
+      return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
+    }
   }
 
   public function update(Request $request, Response $response, $args){
