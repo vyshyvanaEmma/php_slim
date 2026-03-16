@@ -46,7 +46,7 @@ class AlunniController
       return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
     }
 
-    $nome = $data['nome'];
+    $nome = $data['nome']; 
     $cognome = $data['cognome'];
 
     $mysqli_connection = new MySQLi('my_mariadb', 'root', 'ciccio', 'scuola');

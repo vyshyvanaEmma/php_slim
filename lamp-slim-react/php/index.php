@@ -1,8 +1,9 @@
 <?php
 use Slim\Factory\AppFactory;
 
-require __DIR__ . '/vendor/autoload.php';       // require è come import, prende il codice del file richiesto     cartella vendor la crea composser
+require __DIR__ . '/vendor/autoload.php';       // require è come import, prende il codice del file richiesto cartella vendor la crea composser
 require __DIR__ . '/controllers/AlunniController.php';
+require __DIR__ . '/controllers/CertificazioniController.php';
 use Psr\Http\Message\ResponseInterface as Response;     // importa interfaccia PSR-7 per la risposta http come Response 
 use Psr\Http\Message\ServerRequestInterface as Request; // importa interfaccia PSR-7 per la richiesta http come Request 
 
@@ -46,5 +47,17 @@ $app->post('/alunni', "AlunniController:create");
 $app->put('/alunni/{id}', "AlunniController:update");
 
 $app->delete('/alunni/{id}', "AlunniController:destroy");
+
+// certificazioni 
+//faccio /alunni/id/certificazioni per gestire il collegamento 1:N
+$app->get('/alunni/{idAlunno}/certificazioni', "CertificazioniController:index");
+
+$app->get('/alunni/{idAlunno}/certificazioni/{idCert}', "CertificazioniController:show");
+
+$app->post('/alunni/{idAlunno}/certificazioni', "CertificazioniController:create");
+
+$app->put('/alunni/{idAlunno}/certificazioni/{idCert}', "CertificazioniController:update");
+
+$app->delete('/alunni/{idAlunno}/certificazioni/{idCert}', "CertificazioniController:destroy");
 
 $app->run();
